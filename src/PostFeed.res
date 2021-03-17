@@ -66,12 +66,12 @@ module PostItem = {
         </p>
         <div className="flex justify-center mb-5">
           <button
-            className="mr-4 mt-4 bg-yellow-500 hover:bg-yellow-900 text-white py-2 px-4 rounded-full transition duration-300"
+            className="mr-4 mt-4 bg-yellow-500 hover:bg-yellow-900 text-white py-2 px-4 rounded-full transition duration-300 focus:outline-none"
             onClick={restoreButtonHandler}>
             {s("Restore")}
           </button>
           <button
-            className="mr-4 mt-4 bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300"
+            className="mr-4 mt-4 bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300 focus:outline-none"
             onClick={deleteImmediately}>
             {s("Delete Immediately")}
           </button>
@@ -100,7 +100,7 @@ module PostItem = {
                 {s(post.author)}
               </p>
               <button
-                className="bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300"
+                className="bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300 focus:outline-none	"
                 onClick={toggleOptions}>
                 {s("Remove this post")}
               </button>

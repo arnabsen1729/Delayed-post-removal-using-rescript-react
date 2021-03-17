@@ -12,10 +12,6 @@ if (root == null) {
   ReactDom.render(React.createElement(PostFeed.make, {}), root);
 }
 
-if (import.meta.hot) {
-  import.meta.hot.accept();
-}
-
 export {
   
 }

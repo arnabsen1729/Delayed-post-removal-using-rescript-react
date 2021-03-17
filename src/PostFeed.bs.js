@@ -97,10 +97,10 @@ function PostFeed$PostItem(Props) {
                       }, post.author), "will be permanently removed in 10 seconds."), React.createElement("div", {
                     className: "flex justify-center mb-5"
                   }, React.createElement("button", {
-                        className: "mr-4 mt-4 bg-yellow-500 hover:bg-yellow-900 text-white py-2 px-4 rounded-full transition duration-300",
+                        className: "mr-4 mt-4 bg-yellow-500 hover:bg-yellow-900 text-white py-2 px-4 rounded-full transition duration-300 focus:outline-none",
                         onClick: restoreButtonHandler
                       }, "Restore"), React.createElement("button", {
-                        className: "mr-4 mt-4 bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300",
+                        className: "mr-4 mt-4 bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300 focus:outline-none",
                         onClick: deleteImmediately
                       }, "Delete Immediately")), React.createElement("div", {
                     className: "bg-red-500 h-2 w-full absolute top-0 left-0 progress"
@@ -126,7 +126,7 @@ function PostFeed$PostItem(Props) {
                           }, React.createElement("p", {
                                 className: "mx-2 font-semibold text-gray-700 dark:text-gray-200"
                               }, post.author), React.createElement("button", {
-                                className: "bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300",
+                                className: "bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300 focus:outline-none\t",
                                 onClick: toggleOptions
                               }, "Remove this post")))));
   }

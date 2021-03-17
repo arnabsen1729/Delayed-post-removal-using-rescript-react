@@ -13,7 +13,7 @@ switch ReactDOM.querySelector("#root") {
 
   https://www.snowpack.dev/concepts/hot-module-replacement
  */
-@scope("import") @val external meta: 'a = "meta"
-if meta["hot"] {
-  meta["hot"]["accept"]()
-}
+// @scope("import") @val external meta: 'a = "meta"
+// if meta["hot"] {
+//   meta["hot"]["accept"]()
+// }
