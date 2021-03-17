@@ -58,7 +58,7 @@ function PostFeed$PostItem(Props) {
                         TAG: /* DeleteNow */2,
                         _0: post
                       });
-          }), 3000);
+          }), 10000);
     console.log(eventId);
     Curry._1(dispatch, {
           TAG: /* DeleteLater */0,
@@ -86,30 +86,49 @@ function PostFeed$PostItem(Props) {
                 }));
   };
   if (match[0]) {
-    return React.createElement("div", undefined, React.createElement("button", {
-                    className: "bg-gray-300",
-                    onClick: restoreButtonHandler
-                  }, "Restore"), React.createElement("button", {
-                    className: "bg-gray-300",
-                    onClick: deleteImmediately
-                  }, "Delete Immediately"));
+    return React.createElement("div", {
+                className: "max-w-2xl mx-auto overflow-hidden bg-white hover:bg-yellow-100 shadow-md rounded-lg hover:shadow-xl transform hover:scale-110 duration-200  dark:bg-gray-800 relative"
+              }, React.createElement("p", {
+                    className: "p-6 text-center white mb-1 text-lg"
+                  }, "This post from ", React.createElement("span", {
+                        className: "font-bold"
+                      }, post.title), "by ", React.createElement("span", {
+                        className: "font-bold"
+                      }, post.author), "will be permanently removed in 10 seconds."), React.createElement("div", {
+                    className: "flex justify-center mb-5"
+                  }, React.createElement("button", {
+                        className: "mr-4 mt-4 bg-yellow-500 hover:bg-yellow-900 text-white py-2 px-4 rounded-full transition duration-300",
+                        onClick: restoreButtonHandler
+                      }, "Restore"), React.createElement("button", {
+                        className: "mr-4 mt-4 bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300",
+                        onClick: deleteImmediately
+                      }, "Delete Immediately")), React.createElement("div", {
+                    className: "bg-red-500 h-2 w-full absolute top-0 left-0 progress"
+                  }));
   } else {
     return React.createElement("div", {
-                className: "border border-gray-700"
+                className: "max-w-2xl mx-auto overflow-hidden bg-white hover:bg-yellow-100 shadow-md rounded-lg hover:shadow-xl transform hover:scale-110 duration-200  dark:bg-gray-800"
               }, React.createElement("div", {
-                    className: "text-xl font-bold"
-                  }, post.title), React.createElement("div", {
-                    className: "text-lg"
-                  }, post.author), React.createElement("div", {
-                    className: ""
-                  }, Belt_Array.mapWithIndex(post.text, (function (index, para) {
-                          return React.createElement("div", {
-                                      key: post.id + String(index)
-                                    }, para);
-                        }))), React.createElement("button", {
-                    className: "bg-gray-300",
-                    onClick: toggleOptions
-                  }, "Remove this post"));
+                    className: "p-6"
+                  }, React.createElement("div", undefined, React.createElement("p", {
+                            className: "block mt-2 text-2xl font-semibold text-gray-800 dark:text-white"
+                          }, post.title), React.createElement("div", {
+                            className: "mt-2 text-sm text-gray-600 dark:text-gray-400"
+                          }, Belt_Array.mapWithIndex(post.text, (function (index, para) {
+                                  return React.createElement("p", {
+                                              key: post.id + String(index),
+                                              className: "mb-1"
+                                            }, para);
+                                })))), React.createElement("div", {
+                        className: "mt-4"
+                      }, React.createElement("div", {
+                            className: "flex items-center justify-between"
+                          }, React.createElement("p", {
+                                className: "mx-2 font-semibold text-gray-700 dark:text-gray-200"
+                              }, post.author), React.createElement("button", {
+                                className: "bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300",
+                                onClick: toggleOptions
+                              }, "Remove this post")))));
   }
 }
 
@@ -126,9 +145,9 @@ function PostFeed(Props) {
     
   };
   return React.createElement("div", {
-              className: "max-w-3xl mx-auto mt-8 relative s"
+              className: "bg-yellow-200 px-8 py-10 min-h-screen"
             }, React.createElement("div", {
-                  className: "space-y-5"
+                  className: "space-y-8"
                 }, Belt_Array.map(state.posts, (function (postData) {
                         return React.createElement(PostFeed$PostItem, {
                                     post: postData,

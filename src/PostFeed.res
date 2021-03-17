@@ -37,7 +37,7 @@ module PostItem = {
     let (showOptions, setShowOptions) = React.useState(() => false)
 
     let toggleOptions = _ => {
-      let eventId = window["setTimeout"](() => {dispatch(DeleteNow(post))}, 3000)
+      let eventId = window["setTimeout"](() => {dispatch(DeleteNow(post))}, 10000)
       Js.log(eventId)
       dispatch(DeleteLater(post, eventId))
       setShowOptions(_ => true)
@@ -55,24 +55,58 @@ module PostItem = {
     }
 
     if showOptions {
-      <div>
-        <button className="bg-gray-300" onClick={restoreButtonHandler}> {s("Restore")} </button>
-        <button className="bg-gray-300" onClick={deleteImmediately}>
-          {s("Delete Immediately")}
-        </button>
+      <div
+        className="max-w-2xl mx-auto overflow-hidden bg-white hover:bg-yellow-100 shadow-md rounded-lg hover:shadow-xl transform hover:scale-110 duration-200  dark:bg-gray-800 relative">
+        <p className="p-6 text-center white mb-1 text-lg">
+          {s("This post from ")}
+          <span className="font-bold"> {s(post.title)} </span>
+          {s("by ")}
+          <span className="font-bold"> {s(post.author)} </span>
+          {s("will be permanently removed in 10 seconds.")}
+        </p>
+        <div className="flex justify-center mb-5">
+          <button
+            className="mr-4 mt-4 bg-yellow-500 hover:bg-yellow-900 text-white py-2 px-4 rounded-full transition duration-300"
+            onClick={restoreButtonHandler}>
+            {s("Restore")}
+          </button>
+          <button
+            className="mr-4 mt-4 bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300"
+            onClick={deleteImmediately}>
+            {s("Delete Immediately")}
+          </button>
+        </div>
+        <div className="bg-red-500 h-2 w-full absolute top-0 left-0 progress" />
       </div>
     } else {
-      <div className="border border-gray-700">
-        <div className="text-xl font-bold"> {s(post.title)} </div>
-        <div className="text-lg"> {s(post.author)} </div>
-        <div className="">
-          {post.text
-          ->Array.mapWithIndex((index, para) => {
-            <div key={newId(post.id, index)}> {s(para)} </div>
-          })
-          ->React.array}
+      <div
+        className="max-w-2xl mx-auto overflow-hidden bg-white hover:bg-yellow-100 shadow-md rounded-lg hover:shadow-xl transform hover:scale-110 duration-200  dark:bg-gray-800">
+        <div className="p-6">
+          <div>
+            <p className="block mt-2 text-2xl font-semibold text-gray-800 dark:text-white">
+              {s(post.title)}
+            </p>
+            <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+              {post.text
+              ->Array.mapWithIndex((index, para) => {
+                <p className="mb-1" key={newId(post.id, index)}> {s(para)} </p>
+              })
+              ->React.array}
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="flex items-center justify-between">
+              <p className="mx-2 font-semibold text-gray-700 dark:text-gray-200">
+                {s(post.author)}
+              </p>
+              <button
+                className="bg-red-500 hover:bg-red-900 text-white py-2 px-4 rounded-full transition duration-300"
+                onClick={toggleOptions}>
+                {s("Remove this post")}
+              </button>
+            </div>
+          </div>
         </div>
-        <button className="bg-gray-300" onClick={toggleOptions}> {s("Remove this post")} </button>
       </div>
     }
   }
@@ -86,8 +120,8 @@ let make = () => {
     state.forDeletion->Map.String.get(post.id)->Option.map(window["clearTimeout"])->ignore
   }
 
-  <div className="max-w-3xl mx-auto mt-8 relative s">
-    <div className="space-y-5">
+  <div className="bg-yellow-200 px-8 py-10 min-h-screen">
+    <div className="space-y-8">
       {state.posts
       ->Belt.Array.map(postData => {
         <PostItem key=postData.id post=postData dispatch clearTimeOut />
