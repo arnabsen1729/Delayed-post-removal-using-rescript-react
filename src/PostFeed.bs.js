@@ -75,12 +75,23 @@ function PostFeed$PostItem(Props) {
                   return false;
                 }));
   };
+  var deleteImmediately = function (param) {
+    Curry._1(clearTimeOut, post);
+    Curry._1(dispatch, {
+          TAG: /* DeleteNow */2,
+          _0: post
+        });
+    return Curry._1(setShowOptions, (function (param) {
+                  return false;
+                }));
+  };
   if (match[0]) {
     return React.createElement("div", undefined, React.createElement("button", {
                     className: "bg-gray-300",
                     onClick: restoreButtonHandler
                   }, "Restore"), React.createElement("button", {
-                    className: "bg-gray-300"
+                    className: "bg-gray-300",
+                    onClick: deleteImmediately
                   }, "Delete Immediately"));
   } else {
     return React.createElement("div", {

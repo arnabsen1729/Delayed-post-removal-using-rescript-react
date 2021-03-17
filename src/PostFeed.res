@@ -48,10 +48,18 @@ module PostItem = {
       setShowOptions(_ => false)
     }
 
+    let deleteImmediately = _ => {
+      post->clearTimeOut
+      dispatch(DeleteNow(post))
+      setShowOptions(_ => false)
+    }
+
     if showOptions {
       <div>
         <button className="bg-gray-300" onClick={restoreButtonHandler}> {s("Restore")} </button>
-        <button className="bg-gray-300"> {s("Delete Immediately")} </button>
+        <button className="bg-gray-300" onClick={deleteImmediately}>
+          {s("Delete Immediately")}
+        </button>
       </div>
     } else {
       <div className="border border-gray-700">
