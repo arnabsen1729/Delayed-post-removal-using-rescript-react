@@ -2,6 +2,7 @@
 
 import * as Post from "./post.bs.js";
 import * as React from "react";
+import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 
 function s(prim) {
   return prim;
@@ -16,11 +17,45 @@ var initialState = {
   forDeletion: undefined
 };
 
+function newId(id, index) {
+  return id + String(index);
+}
+
+function PostFeed$Post(Props) {
+  var id = Props.id;
+  var title = Props.title;
+  var author = Props.author;
+  var text = Props.text;
+  return React.createElement("div", undefined, React.createElement("div", {
+                  className: "text-xl font-bold"
+                }, title), React.createElement("div", {
+                  className: "text-lg"
+                }, author), React.createElement("div", {
+                  className: ""
+                }, Belt_Array.mapWithIndex(text, (function (index, para) {
+                        return React.createElement("div", {
+                                    key: id + String(index)
+                                  }, para);
+                      }))));
+}
+
+var Post$1 = {
+  make: PostFeed$Post
+};
+
 function PostFeed(Props) {
-  React.useReducer(reducer, initialState);
+  var match = React.useReducer(reducer, initialState);
   return React.createElement("div", {
               className: "max-w-3xl mx-auto mt-8 relative"
-            }, React.createElement("p", undefined, "Container for posts!"));
+            }, React.createElement("div", undefined, Belt_Array.map(match[0].posts, (function (postData) {
+                        return React.createElement(PostFeed$Post, {
+                                    id: postData.id,
+                                    title: postData.title,
+                                    author: postData.author,
+                                    text: postData.text,
+                                    key: postData.id
+                                  });
+                      }))));
 }
 
 var make = PostFeed;
@@ -29,6 +64,8 @@ export {
   s ,
   reducer ,
   initialState ,
+  newId ,
+  Post$1 as Post,
   make ,
   
 }
