@@ -4,6 +4,8 @@ import * as Post from "./post.bs.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
+import * as Belt_MapString from "bs-platform/lib/es6/belt_MapString.js";
 
 function s(prim) {
   return prim;
@@ -12,10 +14,9 @@ function s(prim) {
 function reducer(state, action) {
   switch (action.TAG | 0) {
     case /* DeleteLater */0 :
-        window.clearTimeout(action._1);
         return {
-                posts: state.posts.concat([action._0]),
-                forDeletion: state.forDeletion
+                posts: state.posts,
+                forDeletion: Belt_MapString.set(state.forDeletion, action._0.id, action._1)
               };
     case /* DeleteAbort */1 :
         return {
@@ -45,18 +46,39 @@ function newId(id, index) {
 
 function PostFeed$PostItem(Props) {
   var post = Props.post;
+  var dispatch = Props.dispatch;
+  var clearTimeOut = Props.clearTimeOut;
   var match = React.useState(function () {
         return false;
       });
   var setShowOptions = match[1];
-  var toggleOptions = function (_event) {
+  var toggleOptions = function (param) {
+    var eventId = window.setTimeout((function (param) {
+            return Curry._1(dispatch, {
+                        TAG: /* DeleteNow */2,
+                        _0: post
+                      });
+          }), 3000);
+    console.log(eventId);
+    Curry._1(dispatch, {
+          TAG: /* DeleteLater */0,
+          _0: post,
+          _1: eventId
+        });
     return Curry._1(setShowOptions, (function (param) {
                   return true;
                 }));
   };
+  var restoreButtonHandler = function (param) {
+    Curry._1(clearTimeOut, post);
+    return Curry._1(setShowOptions, (function (param) {
+                  return false;
+                }));
+  };
   if (match[0]) {
     return React.createElement("div", undefined, React.createElement("button", {
-                    className: "bg-gray-300"
+                    className: "bg-gray-300",
+                    onClick: restoreButtonHandler
                   }, "Restore"), React.createElement("button", {
                     className: "bg-gray-300"
                   }, "Delete Immediately"));
@@ -86,13 +108,22 @@ var PostItem = {
 
 function PostFeed(Props) {
   var match = React.useReducer(reducer, initialState);
+  var dispatch = match[1];
+  var state = match[0];
+  var clearTimeOut = function (post) {
+    Belt_Option.map(Belt_MapString.get(state.forDeletion, post.id), window.clearTimeout);
+    
+  };
   return React.createElement("div", {
               className: "max-w-3xl mx-auto mt-8 relative s"
             }, React.createElement("div", {
                   className: "space-y-5"
-                }, Belt_Array.map(match[0].posts, (function (postData) {
+                }, Belt_Array.map(state.posts, (function (postData) {
                         return React.createElement(PostFeed$PostItem, {
-                                    post: postData
+                                    post: postData,
+                                    dispatch: dispatch,
+                                    clearTimeOut: clearTimeOut,
+                                    key: postData.id
                                   });
                       }))));
 }

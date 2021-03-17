@@ -14,11 +14,8 @@ type action =
 let reducer = (state, action) =>
   switch action {
   | DeleteLater(post, timeoutId) => {
-      window["clearTimeout"](timeoutId)->ignore
-      {
-        ...state,
-        posts: state.posts->Js.Array2.concat([post]),
-      }
+      ...state,
+      forDeletion: state.forDeletion->Map.String.set(post.id, timeoutId),
     }
   | DeleteAbort(post) => {
       ...state,
@@ -36,15 +33,24 @@ let newId = (id, index) => {id ++ index->Int.toString}
 
 module PostItem = {
   @react.component
-  let make = (~post: Post.t) => {
+  let make = (~post: Post.t, ~dispatch, ~clearTimeOut) => {
     let (showOptions, setShowOptions) = React.useState(() => false)
 
-    let toggleOptions = _event => {
+    let toggleOptions = _ => {
+      let eventId = window["setTimeout"](() => {dispatch(DeleteNow(post))}, 3000)
+      Js.log(eventId)
+      dispatch(DeleteLater(post, eventId))
       setShowOptions(_ => true)
     }
+
+    let restoreButtonHandler = _ => {
+      post->clearTimeOut
+      setShowOptions(_ => false)
+    }
+
     if showOptions {
       <div>
-        <button className="bg-gray-300"> {s("Restore")} </button>
+        <button className="bg-gray-300" onClick={restoreButtonHandler}> {s("Restore")} </button>
         <button className="bg-gray-300"> {s("Delete Immediately")} </button>
       </div>
     } else {
@@ -68,11 +74,15 @@ module PostItem = {
 let make = () => {
   let (state, dispatch) = React.useReducer(reducer, initialState)
 
+  let clearTimeOut = (post: Post.t) => {
+    state.forDeletion->Map.String.get(post.id)->Option.map(window["clearTimeout"])->ignore
+  }
+
   <div className="max-w-3xl mx-auto mt-8 relative s">
     <div className="space-y-5">
       {state.posts
       ->Belt.Array.map(postData => {
-        <PostItem post=postData />
+        <PostItem key=postData.id post=postData dispatch clearTimeOut />
       })
       ->React.array}
     </div>
